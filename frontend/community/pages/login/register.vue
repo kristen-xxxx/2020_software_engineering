@@ -90,6 +90,7 @@
 				password:'', //密码
 				password2:'', //确认密码
 				verCode:"", //验证码
+				sex:'',
 				showAgree:true, //协议是否选择
 				isRotate: false, //是否加载旋转
 			}
@@ -106,33 +107,6 @@
 				//是否选择协议
 				_this.showAgree = !_this.showAgree;
 			},
-			// getVerCode(){
-			// 	//获取验证码
-			// 	if (_this.tel.length != 11) {
-			// 	     uni.showToast({
-			// 	        icon: 'none',
-			// 			position: 'bottom',
-			// 	        title: '手机号不正确'
-			// 	    });
-			// 	    return false;
-			// 	}
-			// 	console.log("获取验证码")
-			// 	this.$refs.runCode.$emit('runCode'); //触发倒计时（一般用于请求成功验证码后调用）
-			// 	uni.showToast({
-			// 	    icon: 'none',
-			// 		position: 'bottom',
-			// 	    title: '模拟倒计时触发'
-			// 	});
-				
-			// 	setTimeout(function(){
-			// 		_this.$refs.runCode.$emit('runCode',0); //假装模拟下需要 终止倒计时
-			// 		uni.showToast({
-			// 		    icon: 'none',
-			// 			position: 'bottom',
-			// 		    title: '模拟倒计时终止'
-			// 		});
-			// 	},3000)
-			// },
 			
 		    startReg() {
 				//注册
@@ -156,14 +130,30 @@
 				    });
 				    return false;
 				}
-		        if (this.password.length < 6 || this.password2.length < 6 || this.password!=this.password2) {
+				if (this.ic.length !=18) {
+				    uni.showToast({
+				        icon: 'none',
+						position: 'bottom',
+				        title: '身份证号不正确'
+				    });
+				    return false;
+				}
+		        if (this.password.length < 6 || this.password2.length < 6 ) {
 		            uni.showToast({
 		                icon: 'none',
 						position: 'bottom',
-		                title: '密码不正确'
+		                title: '密码至少6位'
 		            });
 		            return false;
 		        }
+				if (this.password!=this.password2) {
+				    uni.showToast({
+				        icon: 'none',
+						position: 'bottom',
+				        title: '两次密码输入不一致'
+				    });
+				    return false;
+				}
 				// if (this.verCode.length != 4) {
 				//     uni.showToast({
 				//         icon: 'none',
@@ -173,8 +163,59 @@
 				//     return false;
 				// }
 				
+				//根据身份证号判断性别
 				
-				console.log("注册成功")
+				var num = this.ic.charAt(16);
+				//console.log(num);
+				if(num%2==0){
+				  // console.log('女');
+				  this.sex='2';
+				}else{
+				  // console.log('男');
+				  this.sex='1';
+				}
+				
+				//发送登录请求
+				uni.request({
+					url:'http://localhost:9090/user/register',
+					method:'GET',
+					//header: {'content-type' : "application/x-www-form-urlencoded"},
+					data:{
+						tel:this.tel,
+						name:this.name,
+						ic:this.ic,
+						sex:this.sex,
+						password:this.password,
+					},
+					
+					success: res => {
+						console.log(res);
+						// this.news = res.data;
+						// uni.hideLoading();
+						if (res.data.statusCode == 1){
+							uni.showToast({
+							    icon: 'none',
+								position: 'bottom',
+							    title: '注册成功'
+							});
+								uni.navigateTo({
+									url: '../login/login'
+								});
+							}else{
+								uni.showToast({
+								    icon: 'none',
+									position: 'bottom',
+								    title: '注册失败：当前用户已注册'
+								});
+							}
+					},
+					
+					fail: () => {},
+					complete: () => {}
+				})
+				
+				
+				
 				_this.isRotate=true
 				setTimeout(function(){
 					_this.isRotate=false

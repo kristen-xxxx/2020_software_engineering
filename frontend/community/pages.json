@@ -43,6 +43,10 @@
             "path" : "pages/index/history",
             "style" : {}
         }
+        ,{
+            "path" : "pages/notice/info",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 	    "color": "#7A7E83",

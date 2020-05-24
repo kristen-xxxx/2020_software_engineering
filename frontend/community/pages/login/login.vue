@@ -115,17 +115,33 @@
 				
 				//发送登录请求
 				uni.request({
-					url:'https://easy-mock.com/mock/5ec2a6d51b282023a6f00394/example/login',
-					method:'POST',
-					// header: {'content-type' : "application/x-www-form-urlencoded"},
+					url:'http://localhost:9090/user/login',
+					method:'GET',
 					data:{
-						tel:this.tel,
-						password:this.password
+						"tel":this.tel,
+						"password":this.password
 					},
 					success: res => {
 						console.log(res);
-						// this.news = res.data;
-						// uni.hideLoading();
+						//判断登录情况
+						if (res.data.statusCode == 1){
+							uni.setStorage({
+								key: 'storage_user',
+								data: res.data.data,
+								success: function () {
+								    console.log('success');
+								}
+							});
+							uni.switchTab({
+								url: '../index/index'
+							});
+						}else{
+							uni.showToast({
+							    icon: 'none',
+								position: 'bottom',
+							    title: '用户名或密码错误'
+							});
+						}
 					},
 					fail: () => {},
 					complete: () => {}

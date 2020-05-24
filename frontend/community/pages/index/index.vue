@@ -18,12 +18,22 @@
 		methods: {
 			healthReport(){
 				uni.navigateTo({
-					url: './repo1'
+					url: '../index/repo1'
 				});
+				//测试
+				// uni.getStorage({
+				// key: 'storage_user',
+				// success: function (res) {
+				//     //console.log(res.data);
+				// 	var name = res.data.name
+				// 	console.log(name);
+				// },
+				// });
 			},
+			
 			reportHistory(){
 				uni.navigateTo({
-					url: './history'
+					url: '../index/history'
 				});
 			},
 			
