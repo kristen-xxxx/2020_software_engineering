@@ -3,4 +3,4 @@
  ### 前端：uniapp
  ### 后端：spring boot + mysql
 
-本项目的[知识库](https://www.yuque.com/docs/share/e1ae8caa-c552-4e2d-a1b4-35bc02ec0a98?#) 
+本项目的[知识库](https://www.yuque.com/u832342/goz0vo/kptv36) 暂未公开，仅团队成员留档
